@@ -1,0 +1,22 @@
+version: '3.8'
+
+services:
+  nginx:
+  # Using sequentional order "depends_on", the nginx will automatically start once all the backend services is started first.
+  # Caused by the nginx open source version is cannot handle di dynamic DNS
+    depends_on:
+      - backend-service1
+      - backend-service2
+    image: nginx:latest
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+    ports:
+      - "80:80"
+  backend-service1:
+    image: my-service1:latest
+    ports:
+      - "5001:5000"
+  backend-service2:
+    image: my-service2:latest
+    ports:
+      - "5002:5000"
